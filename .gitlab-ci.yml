@@ -1,0 +1,56 @@
+image: docker:20.10
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:20.10-dind
+
+stages:
+  - build
+  - push
+  - test
+
+before_script:
+  - docker info
+  - export ANSIBLE_VERSION="$(grep ansible_version= Dockerfile | awk -F'=' '{print $2}')"
+
+build:
+  stage: build
+  script:
+   # ans
+   - docker build -f Dockerfile -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION .
+   - docker build -f Dockerfile-root -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION-root .
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest ansible --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest molecule --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root ansible --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root molecule --version
+
+push_to_dockerhub:
+ stage: push
+ only:
+   - master
+ script:
+   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
+   # ans latest
+   - docker build -f Dockerfile -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION .
+   - docker build -f Dockerfile-root -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION-root .
+   # summary
+   - docker images
+   # push image
+   - docker push $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest
+   - docker push $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION
+   # push root image
+   - docker push $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root
+   - docker push $DOCKERHUB_USER/$DOCKERHUB_PROJECT:$ANSIBLE_VERSION-root
+
+test_docker_images:
+ stage: test
+ only:
+   - master
+ script:
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest ansible --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest molecule --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root ansible --version
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:root molecule --version
