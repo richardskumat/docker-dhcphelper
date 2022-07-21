@@ -19,7 +19,7 @@ build:
   stage: build
   script:
    - docker build -f Dockerfile -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest .
-   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest dhcp-helper -v
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest -v
 
 push_to_dockerhub:
  stage: push
@@ -39,4 +39,4 @@ test_docker_images:
  only:
    - master
  script:
-   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest dhcp-helper -v
+   - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest -v
