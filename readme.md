@@ -4,6 +4,7 @@ This projects builds a ct with dhchelper.
 
 ### Alpine version's Dhchelper options as of 2022
 
+``` none
 Usage: dhcp-helper [OPTIONS]
 Options are:
 -s <server>      Forward DHCP requests to <server>
@@ -16,3 +17,4 @@ Options are:
 -d               Debug mode
 -n               Do not demonize
 -v               Give version and copyright info and then exit
+```
