@@ -7,6 +7,7 @@ Dockerhub images can be found at [https://hub.docker.com/r/qwe1/docker-dhchelper
 I intend to use this image as a dhcp relay for testing a pihole setup in my homelab
 with Pihole, Traefik and dhchelper.
 
+Dockerfile is based on the post in [https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038](https://discourse.pi-hole.net/t/dhcp-with-docker-compose-and-bridge-networking/17038) by user DerFetzer. Thank you.
 ## About dhchelper
 
 dhcp-helper version 1.2-r0, Copyright (C) 2004-2012 Simon Kelley

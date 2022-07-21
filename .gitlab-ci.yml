@@ -18,7 +18,6 @@ before_script:
 build:
   stage: build
   script:
-   # ans
    - docker build -f Dockerfile -t $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest .
    - docker run --rm $DOCKERHUB_USER/$DOCKERHUB_PROJECT:latest dhcp-helper -v
 
