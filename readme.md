@@ -34,6 +34,12 @@ Known issue with below configuration:
 
 Raspbian 11 version of dhcpcd fails to rebind dhcp lease for some reason.
 
+Log:
+
+```none
+syslog.1:Aug 18 14:18:28 rpi3 dhcpcd[27283]: eth0: failed to renew DHCP, rebinding
+```
+
 Below is an example with Pihole, DHCP-Helper and Traefik:
 
 
