@@ -30,6 +30,10 @@ Options are:
 
 ## Docker-compose example with ansible
 
+Known issue with below configuration:
+
+Raspbian 11 version of dhcpcd fails to rebind dhcp lease for some reason.
+
 Below is an example with Pihole, DHCP-Helper and Traefik:
 
 
