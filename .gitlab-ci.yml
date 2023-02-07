@@ -1,6 +1,6 @@
-image: qwe1/debdocker:20.10
+image: qwe1/debdocker:23.0
 services:
-  - name: docker:20.10-dind
+  - name: docker:23.0-dind
     command: ["--experimental"]
 variables:
   #DOCKER_HOST: tcp://docker:2376
