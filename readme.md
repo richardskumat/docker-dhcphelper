@@ -32,7 +32,11 @@ Options are:
 
 Known issue with below configuration:
 
-Raspbian 11 version of dhcpcd fails to rebind dhcp lease for some reason.
+DHCP renewals requests via broadcast don't seem to work with the below configuration
+as the DHCP server of pihole is on a different subnet.
+
+In my network, the client(a physical machine) and the server(dnsmasq inside pihole)
+couldn't directly communicate eachother with unicast when it came to renewals.
 
 Log:
 
